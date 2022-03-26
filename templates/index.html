@@ -1,0 +1,68 @@
+{% include "header.html" %}
+<nav class="fixed-top navbar navbar-expand-lg navbar-dark bg-dark px-4">
+    <div class="container-fluid">
+        <a class="navbar-brand fs-4" href="#">Sip Spots</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <ul class="navbar-nav me-auto mx-2 mb-lg-0">
+                <li class="nav-item mx-2">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Home</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link" href="#cafe-list">See the Spots</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link" href="{{ url_for('add_cafe') }}">Add a Cafe</a>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search by location" aria-label="Search">
+                <button class="btn btn-outline-light" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="d-flex h-100 text-center bg" style="color: #000000">
+    <div class="cover-container d-flex w-100 h-100 mx-auto flex-column">
+        <main class="px-3">
+            <h1 class="cover-h1">Sip Spots</h1>
+            <h4>London</h4>
+            <hr id="cover-hr">
+            <p class="lead cover-text">Whether it's strong WiFi, or you just need to know if you'll have a spot to plug
+                your computer into, we've got you covered. Sip Spots brings to you the best cafes to get your work done
+                at.</p>
+        </main>
+    </div>
+</div>
+
+<div class="album py-5 bg-light" id="cafe-list">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for cafe in cafes %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <a href="{{ cafe.map_url }}">
+                        <img src="{{ cafe.img_url }}" height=225 class="card-img-top">
+                    </a>
+                    <div class="card-body">
+                        <p class="card-text fs-5">{{ cafe.name }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            </div>
+                            <small class="text-muted">{{ cafe.location }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% include "footer.html" %}
