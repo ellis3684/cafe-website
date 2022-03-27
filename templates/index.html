@@ -1,7 +1,7 @@
 {% include "header.html" %}
 <nav class="fixed-top navbar navbar-expand-lg navbar-dark bg-dark px-4">
     <div class="container-fluid">
-        <a class="navbar-brand fs-4" href="#">Sip Spots</a>
+        <a class="navbar-brand fs-4" href="{{ url_for('home') }}">Sip Spots</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -18,8 +18,14 @@
                     <a class="nav-link" href="{{ url_for('add_cafe') }}">Add a Cafe</a>
                 </li>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search by location" aria-label="Search">
+            <form class="d-flex needs-validation" action="/search" novalidate>
+                <div class="input-group has-validation">
+                    <input class="form-control me-2" type="search" placeholder="Search by location" aria-label="Search"
+                           name="loc" required>
+                    <div class="invalid-feedback">
+                        Please type a location to search for.
+                    </div>
+                </div>
                 <button class="btn btn-outline-light" type="submit">Search</button>
             </form>
         </div>
@@ -33,12 +39,21 @@
             <h4>London</h4>
             <hr id="cover-hr">
             <p class="lead cover-text">Whether it's strong WiFi, or you just need to know if you'll have a spot to plug
-                your computer into, we've got you covered. Sip Spots brings to you the best cafes to get your work done
-                at.</p>
+                your computer into, we've got you covered. Sip Spots brings to you the most work-friendly cafes in your city.</p>
         </main>
     </div>
 </div>
 
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="m-5 alert alert-danger" role="alert">
+    {{ message }}
+</div>
+{% endfor %}
+
+{% else %}
 <div class="album py-5 bg-light" id="cafe-list">
     <div class="container">
         <div class="row row-cols-1 row-cols-md-3 g-3">
@@ -55,7 +70,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
                                         <button type="button" class="flip-btn btn btn-sm btn-outline-secondary">View</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#cafe{{ cafe.id }}">Edit</button>
                                     </div>
                                     <small class="text-muted">{{ cafe.location }}</small>
                                 </div>
@@ -149,7 +164,7 @@
                                     <div class="btn-group">
                                         <button type="button" class="flip-btn btn btn-sm btn-outline-secondary">Front
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#cafe{{ cafe.id }}">Edit</button>
                                     </div>
                                 </div>
                             </div>
@@ -157,9 +172,116 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="cafe{{ cafe.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Cafe Info</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <form action="/edit" method="post">
+                            <div class="modal-body">
+                                <input type="hidden" value="{{ cafe.id }}" name="id">
+                                <div class="mb-3">
+                                    <label class="form-label">Update name:</label>
+                                    <input value="{{ cafe.name }}" class="form-control" name="name">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Update location:</label>
+                                    <input value="{{ cafe.location }}" class="form-control" name="location">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Update Google Maps URL:</label>
+                                    <input value="{{ cafe.map_url }}" class="form-control" name="maps_url">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Update cafe image:</label>
+                                    <input value="{{ cafe.img_url }}" class="form-control" name="img_url">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Update coffee price:</label>
+                                    <input value="{{ cafe.coffee_price.replace('£', '') }}" class="form-control" name="coffee_price">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Update seating capacity:</label>
+                                    <input value="{{ cafe.seats }}" class="form-control" name="seats">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-check-label">Has a restroom?</label>
+                                    <select class="form-select form-select-sm" name="has_toilet">
+                                        {% if cafe.has_toilet %}
+                                        <option value="true" selected>Yes</option>
+                                        <option value="">No</option>
+                                        {% else %}
+                                        <option value="true">Yes</option>
+                                        <option value="" selected>No</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label class="form-check-label">Has WiFi?</label>
+                                    <select class="form-select form-select-sm" name="has_wifi">
+                                        {% if cafe.has_wifi %}
+                                        <option value="true" selected>Yes</option>
+                                        <option value="">No</option>
+                                        {% else %}
+                                        <option value="true">Yes</option>
+                                        <option value="" selected>No</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-check-label">Has plug sockets?</label>
+                                    <select class="form-select form-select-sm" name="has_sockets">
+                                        {% if cafe.has_sockets %}
+                                        <option value="true" selected>Yes</option>
+                                        <option value="">No</option>
+                                        {% else %}
+                                        <option value="true">Yes</option>
+                                        <option value="" selected>No</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-check-label">Can take business calls?</label>
+                                    <select class="form-select form-select-sm" name="can_take_calls">
+                                        {% if cafe.can_take_calls %}
+                                        <option value="true" selected>Yes</option>
+                                        <option value="">No</option>
+                                        {% else %}
+                                        <option value="true">Yes</option>
+                                        <option value="" selected>No</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
             {% endfor %}
         </div>
     </div>
 </div>
+
+{% endif %}
+{% endwith %}
 
 {% include "footer.html" %}

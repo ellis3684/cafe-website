@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
@@ -79,6 +79,33 @@ def add_cafe():
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('add-cafe.html', form=form)
+
+
+@app.route('/search')
+def search_by_location():
+    location = request.args.get('loc').title()
+    cafes_in_area = Cafe.query.filter_by(location=location).all()
+    if not cafes_in_area:
+        flash(f'Oh no! It looks like we don\'t have any cafes in {location}.')
+    return render_template('index.html', cafes=cafes_in_area)
+
+
+@app.route('/edit', methods=['POST'])
+def edit_cafe():
+    cafe_id = request.form['id']
+    cafe = Cafe.query.get(cafe_id)
+    cafe.name = request.form['name']
+    cafe.location = request.form['location']
+    cafe.map_url = request.form['maps_url']
+    cafe.img_url = request.form['img_url']
+    cafe.coffee_price = request.form['coffee_price']
+    cafe.seats = request.form['seats']
+    cafe.has_toilet = bool(request.form['has_toilet'])
+    cafe.has_wifi = bool(request.form['has_wifi'])
+    cafe.has_sockets = bool(request.form['has_sockets'])
+    cafe.can_take_calls = bool(request.form['can_take_calls'])
+    db.session.commit()
+    return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
