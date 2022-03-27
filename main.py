@@ -77,6 +77,7 @@ def add_cafe():
         )
         db.session.add(new_cafe)
         db.session.commit()
+        flash(f'Cafe \'{new_cafe.name}\' successfully added!', 'success')
         return redirect(url_for('home'))
     return render_template('add-cafe.html', form=form)
 
@@ -86,7 +87,7 @@ def search_by_location():
     location = request.args.get('loc').title()
     cafes_in_area = Cafe.query.filter_by(location=location).all()
     if not cafes_in_area:
-        flash(f'Oh no! It looks like we don\'t have any cafes in {location}.')
+        flash(f'Oh no! It looks like we don\'t have any cafes in {location}.', 'location')
     return render_template('index.html', cafes=cafes_in_area)
 
 
@@ -105,6 +106,17 @@ def edit_cafe():
     cafe.has_sockets = bool(request.form['has_sockets'])
     cafe.can_take_calls = bool(request.form['can_take_calls'])
     db.session.commit()
+    return redirect(url_for('home'))
+
+
+@app.route('/delete', methods=['POST'])
+def delete_cafe():
+    cafe_id = request.form['id']
+    cafe = Cafe.query.get(cafe_id)
+    name = cafe.name
+    db.session.delete(cafe)
+    db.session.commit()
+    flash(f'Cafe \'{name}\' successfully deleted.', 'success')
     return redirect(url_for('home'))
 
 
