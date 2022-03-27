@@ -1,11 +1,20 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap
 from flask_moment import Moment
+from flask_wtf import FlaskForm
+from wtforms import StringField, URLField, BooleanField, SubmitField
+from wtforms.validators import DataRequired, URL
+import os
 
 
 # Set up Flask
 app = Flask(__name__)
+Bootstrap(app)
 moment = Moment(app)
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
+
 
 # Connect to database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
@@ -28,6 +37,21 @@ class Cafe(db.Model):
     coffee_price = db.Column(db.String(250), nullable=False)
 
 
+# Config flask form to add cafes
+class AddCafeForm(FlaskForm):
+    cafe = StringField('Cafe name:', validators=[DataRequired()])
+    map_url = URLField('Cafe location on Google Maps (URL):', validators=[DataRequired(), URL()])
+    image_url = URLField('Cafe seating area image (URL):', validators=[DataRequired(), URL()])
+    location = StringField('Cafe location (which part of the city):', validators=[DataRequired()])
+    coffee_price = StringField('Price for a coffee in local currency:', validators=[DataRequired()])
+    seats = StringField('How many seats are available?', validators=[DataRequired()])
+    wifi = BooleanField('Is there WiFi?')
+    socket = BooleanField('Are there sockets for your laptop or phone?')
+    toilet = BooleanField('Is there a restroom?')
+    calls_ok = BooleanField('Can you take business calls here?')
+    submit = SubmitField('Submit')
+
+
 # Home route
 @app.route('/')
 def home():
@@ -35,9 +59,26 @@ def home():
     return render_template('index.html', cafes=cafes)
 
 
-@app.route('/add-cafe')
+@app.route('/add-cafe', methods=['GET', 'POST'])
 def add_cafe():
-    return render_template('add-cafe.html')
+    form = AddCafeForm()
+    if form.validate_on_submit():
+        new_cafe = Cafe(
+            name=form.data['cafe'],
+            map_url=form.data['map_url'],
+            img_url=form.data['image_url'],
+            location=form.data['location'],
+            seats=form.data['seats'],
+            has_toilet=form.data['toilet'],
+            has_wifi=form.data['wifi'],
+            has_sockets=form.data['socket'],
+            can_take_calls=form.data['calls_ok'],
+            coffee_price=form.data['coffee_price'],
+        )
+        db.session.add(new_cafe)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('add-cafe.html', form=form)
 
 
 if __name__ == '__main__':
