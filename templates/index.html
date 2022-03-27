@@ -41,21 +41,40 @@
 
 <div class="album py-5 bg-light" id="cafe-list">
     <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="row row-cols-1 row-cols-md-3 g-3">
             {% for cafe in cafes %}
             <div class="col">
-                <div class="card shadow-sm">
-                    <a href="{{ cafe.map_url }}">
-                        <img src="{{ cafe.img_url }}" height=225 class="card-img-top">
-                    </a>
-                    <div class="card-body">
-                        <p class="card-text fs-5">{{ cafe.name }}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                <div class="card card-container shadow-sm">
+                    <div class="card-flipper">
+                        <div class="card-front">
+                            <a href="{{ cafe.map_url }}">
+                                <img src="{{ cafe.img_url }}" height=225 class="card-img-top">
+                            </a>
+                            <div class="card-body">
+                                <p class="card-text">{{ cafe.name }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="flip-btn btn btn-sm btn-outline-secondary">View</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                    </div>
+                                    <small class="text-muted">{{ cafe.location }}</small>
+                                </div>
                             </div>
-                            <small class="text-muted">{{ cafe.location }}</small>
+                        </div>
+                        <div class="card-back">
+                            <a href="{{ cafe.map_url }}">
+                                <img src="{{ cafe.img_url }}" height=225 class="card-img-top">
+                            </a>
+                            <div class="card-body">
+                                <p class="card-text fs-5">This is the back</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="flip-btn btn btn-sm btn-outline-secondary">View</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                    </div>
+                                    <small class="text-muted">Back side here</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
