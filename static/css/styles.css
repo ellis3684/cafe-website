@@ -96,3 +96,7 @@ h4 {
   transform: rotateY(180deg);
   background-color: #fff;
 }
+
+.btn-body {
+  height: 20px;
+}
