@@ -28,7 +28,7 @@
                 <form class="p-5" action="/delete" method="post">
                     <div class="mb-3">
                         <label class="form-label">To delete <strong>{{ cafe_name }}</strong>, please enter your API key:</label>
-                        <input type="text" class="form-control" name="api_key" required>
+                        <input type="password" class="form-control" name="api_key" required>
                         <input type="hidden" name="id" value="{{ cafe_id }}">
                     </div>
                     <button type="submit" class="btn btn-danger">Delete</button>
