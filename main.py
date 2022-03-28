@@ -15,6 +15,9 @@ moment = Moment(app)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
+# Set API Key required to delete cafes
+API_KEY = 'this_is_the_secret_key'
+
 
 # Connect to database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
@@ -87,7 +90,7 @@ def search_by_location():
     location = request.args.get('loc').title()
     cafes_in_area = Cafe.query.filter_by(location=location).all()
     if not cafes_in_area:
-        flash(f'Oh no! It looks like we don\'t have any cafes in {location}.', 'location')
+        flash(f'Oh no! It looks like we don\'t have any cafes in {location}.', 'failure')
     return render_template('index.html', cafes=cafes_in_area)
 
 
@@ -109,15 +112,25 @@ def edit_cafe():
     return redirect(url_for('home'))
 
 
-@app.route('/delete', methods=['POST'])
+@app.route('/delete', methods=['GET', 'POST'])
 def delete_cafe():
-    cafe_id = request.form['id']
-    cafe = Cafe.query.get(cafe_id)
-    name = cafe.name
-    db.session.delete(cafe)
-    db.session.commit()
-    flash(f'Cafe \'{name}\' successfully deleted.', 'success')
-    return redirect(url_for('home'))
+    if request.method == 'GET':
+        cafe_name = request.args.get('name')
+        cafe_id = request.args.get('id')
+        return render_template('delete.html', cafe_name=cafe_name, cafe_id=cafe_id)
+    elif request.method == 'POST':
+        if request.form['api_key'] == API_KEY:
+            cafe_id = request.form['id']
+            cafe = Cafe.query.get(cafe_id)
+            name = cafe.name
+            db.session.delete(cafe)
+            db.session.commit()
+            flash(f'Cafe \'{name}\' successfully deleted.', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash(f'That\'s not a valid key. Please note that if you do not '
+                  f'have a valid API key you will not be able to delete cafes from Sip Spots.', 'failure')
+            return redirect(url_for('home'))
 
 
 if __name__ == '__main__':

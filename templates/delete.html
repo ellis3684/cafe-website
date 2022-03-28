@@ -1,0 +1,41 @@
+{% include "header.html" %}
+
+<nav class="fixed-top navbar navbar-expand-lg navbar-dark bg-dark px-4">
+    <div class="container-fluid">
+        <a class="navbar-brand fs-4" href="{{ url_for('home') }}">Sip Spots</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <ul class="navbar-nav me-auto mx-2 mb-lg-0">
+                <li class="nav-item mx-2">
+                    <a class="nav-link" aria-current="page" href="{{ url_for('home') }}">Home</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link active" href="{{ url_for('add_cafe') }}">Add a Cafe</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="delete-cafe-bg">
+    <div class="container">
+        <div class="row px-lg-5">
+            <div class="col-sm-12 col-md-8 delete-cafe-form p-5">
+                <form class="p-5" action="/delete" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">To delete <strong>{{ cafe_name }}</strong>, please enter your API key:</label>
+                        <input type="text" class="form-control" name="api_key" required>
+                        <input type="hidden" name="id" value="{{ cafe_id }}">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "footer.html" %}

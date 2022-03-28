@@ -60,7 +60,6 @@ h4 {
   background-color: transparent;
 }
 
-/* flip the pane when hovered */
 .card-container.hover .card-flipper {
   transform: rotateY(180deg);
 }
@@ -70,14 +69,12 @@ h4 {
   height: 330px;
 }
 
-/* flip speed */
 .card-flipper {
   transition: 0.8s;
   transform-style: preserve-3d;
   position: relative;
 }
 
-/* hide back of pane during swap */
 .card-front, .card-back {
   backface-visibility: hidden;
   position: absolute;
@@ -85,26 +82,20 @@ h4 {
   left: 0;
 }
 
-/* front pane, placed above back */
 .card-front {
   z-index: 2;
   transform: rotateY(0deg);
 }
 
-/* back, initially hidden pane */
 .card-back {
   transform: rotateY(180deg);
   background-color: #fff;
 }
 
-.add-cafe-bg {
-  /* The image used */
+.add-cafe-bg,
+.delete-cafe-bg {
   background-image: url('../images/cafe.png');
-
-  /* Full height */
   height: 100%;
-
-  /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -117,4 +108,17 @@ h4 {
   background-color: #f2f2f2;
   border: 1px solid #ccc;
   resize: vertical;
+}
+
+.delete-cafe-form {
+  margin: 300px 0px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.alert {
+
 }
