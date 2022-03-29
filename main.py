@@ -7,8 +7,7 @@ from wtforms import StringField, URLField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, URL
 import os
 
-
-# Set up Flask
+# Set up Flask with Flask Bootstrap, Flask Moment, and random app secret key config
 app = Flask(__name__)
 Bootstrap(app)
 moment = Moment(app)
@@ -16,10 +15,9 @@ SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
 # Set API Key required to delete cafes
-API_KEY = 'this_is_the_secret_key'
+API_KEY = os.environ['DELETE_CAFE_API_KEY']
 
-
-# Connect to database
+# Connect to SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -55,13 +53,14 @@ class AddCafeForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
-# Home route
+# Home route renders all cafes in db
 @app.route('/')
 def home():
     cafes = db.session.query(Cafe).all()
     return render_template('index.html', cafes=cafes)
 
 
+# Add cafe form uses Flask form to post new cafe to db
 @app.route('/add-cafe', methods=['GET', 'POST'])
 def add_cafe():
     form = AddCafeForm()
@@ -85,6 +84,7 @@ def add_cafe():
     return render_template('add-cafe.html', form=form)
 
 
+# Search for cafe via location
 @app.route('/search')
 def search_by_location():
     location = request.args.get('loc').title()
@@ -94,6 +94,7 @@ def search_by_location():
     return render_template('index.html', cafes=cafes_in_area)
 
 
+# App route once edit to cafe is made, redirects to home once complete
 @app.route('/edit', methods=['POST'])
 def edit_cafe():
     cafe_id = request.form['id']
@@ -112,6 +113,7 @@ def edit_cafe():
     return redirect(url_for('home'))
 
 
+# User can delete cafes in db only if they have the API key required
 @app.route('/delete', methods=['GET', 'POST'])
 def delete_cafe():
     if request.method == 'GET':
@@ -135,6 +137,3 @@ def delete_cafe():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-

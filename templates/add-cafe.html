@@ -1,6 +1,8 @@
 {% include "header.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+
+<!--Navbar links are altered for the add cafe form-->
 <nav class="fixed-top navbar navbar-expand-lg navbar-dark bg-dark px-4">
     <div class="container-fluid">
         <a class="navbar-brand fs-4" href="{{ url_for('home') }}">Sip Spots</a>
@@ -21,6 +23,8 @@
     </div>
 </nav>
 
+
+<!--Bootstrap WTF quick form with extra classes added to make it look nicer-->
 <div class="add-cafe-bg">
 <div class="container">
   <div class="row px-lg-5">

@@ -1,4 +1,5 @@
 {% include "header.html" %}
+<!--Bootstrap navbar that links to cafe album, add cafe route, and location search bar-->
 <nav class="fixed-top navbar navbar-expand-lg navbar-dark bg-dark px-4">
     <div class="container-fluid">
         <a class="navbar-brand fs-4" href="{{ url_for('home') }}">Sip Spots</a>
@@ -32,6 +33,7 @@
     </div>
 </nav>
 
+<!--Cover intro to Sip Spots-->
 <div class="d-flex h-100 text-center bg" style="color: #000000" id="cafe-cover">
     <div class="cover-container d-flex w-100 h-100 mx-auto flex-column">
         <main class="px-3">
@@ -39,12 +41,14 @@
             <h4>London</h4>
             <hr id="cover-hr">
             <p class="lead cover-text">Whether it's strong WiFi, or you just need to know if you'll have a spot to plug
-                your computer into, we've got you covered. Sip Spots brings to you the most work-friendly cafes in your city.</p>
+                your computer into, we've got you covered. Sip Spots brings to you the most work-friendly cafes in your
+                city.</p>
         </main>
     </div>
 </div>
 
 
+<!--Flash messages shown before main album-->
 {% with messages = get_flashed_messages(category_filter=['failure']) %}
 {% if messages %}
 {% for message in messages %}
@@ -65,13 +69,16 @@
 {% endif %}
 {% endwith %}
 
+
+<!--Main album with each cafe card front, back, and edit form included -->
 <div class="album py-5 bg-light" id="cafe-list">
     <div class="container">
-        <div class="row row-cols-1 row-cols-md-3 g-3">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
             {% for cafe in cafes %}
             <div class="col">
                 <div class="card card-container shadow-sm">
                     <div class="card-flipper">
+                        <!--                        Cafe card front includes link to Google Maps on cafe image, and card back and edit buttons-->
                         <div class="card-front">
                             <a href="{{ cafe.map_url }}">
                                 <img src="{{ cafe.img_url }}" height=225 class="card-img-top">
@@ -80,18 +87,22 @@
                                 <p class="card-text">{{ cafe.name }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <button type="button" class="flip-btn btn btn-sm btn-outline-secondary">View</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#cafe{{ cafe.id }}">Edit</button>
+                                        <button type="button" class="flip-btn btn btn-sm btn-outline-secondary">View
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                data-bs-toggle="modal" data-bs-target="#cafe{{ cafe.id }}">Edit
+                                        </button>
                                     </div>
                                     <small class="text-muted">{{ cafe.location }}</small>
                                 </div>
                             </div>
                         </div>
+                        <!--                        Cafe card back shows cafe information, and card front and edit cafe buttons-->
                         <div class="card-back">
                             <div class="card">
                                 <div class="card-header" style="text-align: center;"><strong>
                                     {{ cafe.name }}
-                                    </strong>
+                                </strong>
                                 </div>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">Coffee price: {{ cafe.coffee_price }}</li>
@@ -104,7 +115,7 @@
                                             <path d="M15.384 6.115a.485.485 0 0 0-.047-.736A12.444 12.444 0 0 0 8 3C5.259 3 2.723 3.882.663 5.379a.485.485 0 0 0-.048.736.518.518 0 0 0 .668.05A11.448 11.448 0 0 1 8 4c2.507 0 4.827.802 6.716 2.164.205.148.49.13.668-.049z"/>
                                             <path d="M13.229 8.271a.482.482 0 0 0-.063-.745A9.455 9.455 0 0 0 8 6c-1.905 0-3.68.56-5.166 1.526a.48.48 0 0 0-.063.745.525.525 0 0 0 .652.065A8.46 8.46 0 0 1 8 7a8.46 8.46 0 0 1 4.576 1.336c.206.132.48.108.653-.065zm-2.183 2.183c.226-.226.185-.605-.1-.75A6.473 6.473 0 0 0 8 9c-1.06 0-2.062.254-2.946.704-.285.145-.326.524-.1.75l.015.015c.16.16.407.19.611.09A5.478 5.478 0 0 1 8 10c.868 0 1.69.201 2.42.56.203.1.45.07.61-.091l.016-.015zM9.06 12.44c.196-.196.198-.52-.04-.66A1.99 1.99 0 0 0 8 11.5a1.99 1.99 0 0 0-1.02.28c-.238.14-.236.464-.04.66l.706.706a.5.5 0 0 0 .707 0l.707-.707z"/>
                                         </svg>
-                                         WiFi
+                                        WiFi
                                     </li>
                                     {% else %}
                                     <li class="list-group-item">
@@ -122,7 +133,7 @@
                                              fill="currentColor" class="bi bi-plug" viewBox="0 0 16 16">
                                             <path d="M6 0a.5.5 0 0 1 .5.5V3h3V.5a.5.5 0 0 1 1 0V3h1a.5.5 0 0 1 .5.5v3A3.5 3.5 0 0 1 8.5 10c-.002.434-.01.845-.04 1.22-.041.514-.126 1.003-.317 1.424a2.083 2.083 0 0 1-.97 1.028C6.725 13.9 6.169 14 5.5 14c-.998 0-1.61.33-1.974.718A1.922 1.922 0 0 0 3 16H2c0-.616.232-1.367.797-1.968C3.374 13.42 4.261 13 5.5 13c.581 0 .962-.088 1.218-.219.241-.123.4-.3.514-.55.121-.266.193-.621.23-1.09.027-.34.035-.718.037-1.141A3.5 3.5 0 0 1 4 6.5v-3a.5.5 0 0 1 .5-.5h1V.5A.5.5 0 0 1 6 0zM5 4v2.5A2.5 2.5 0 0 0 7.5 9h1A2.5 2.5 0 0 0 11 6.5V4H5z"/>
                                         </svg>
-                                         Sockets
+                                        Sockets
                                     </li>
                                     {% else %}
                                     <li class="list-group-item">
@@ -169,13 +180,14 @@
                                         <s>Business calls: OK</s>
                                     </li>
                                     {% endif %}
-
                                 </ul>
                                 <div class="card-footer">
                                     <div class="btn-group">
                                         <button type="button" class="flip-btn btn btn-sm btn-outline-secondary">Front
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#cafe{{ cafe.id }}">Edit</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                data-bs-toggle="modal" data-bs-target="#cafe{{ cafe.id }}">Edit
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -183,6 +195,9 @@
                     </div>
                 </div>
             </div>
+
+            <!--            Cafe edit form modal pops up if user clicks 'Edit' button on the cafe card-->
+            <!--            Form is pre-populated with current cafe info, and the user may change as much or as little info as they like-->
             <div class="modal fade" id="cafe{{ cafe.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -216,7 +231,8 @@
 
                                 <div class="mb-3">
                                     <label class="form-label">Update coffee price:</label>
-                                    <input value="{{ cafe.coffee_price.replace('£', '') }}" class="form-control" name="coffee_price">
+                                    <input value="{{ cafe.coffee_price.replace('£', '') }}" class="form-control"
+                                           name="coffee_price">
                                 </div>
 
                                 <div class="mb-3">
@@ -236,7 +252,6 @@
                                         {% endif %}
                                     </select>
                                 </div>
-
 
                                 <div class="mb-3">
                                     <label class="form-check-label">Has WiFi?</label>
@@ -279,7 +294,10 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" formmethod="get" formaction="/delete" class="btn btn-danger">Delete</button>
+                                <!--                                Edit cafe modal footer includes 'Delete' button that links to the delete cafe route-->
+                                <button type="submit" formmethod="get" formaction="/delete" class="btn btn-danger">
+                                    Delete
+                                </button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-primary">Save changes</button>
                             </div>
@@ -291,7 +309,6 @@
         </div>
     </div>
 </div>
-
 
 
 {% include "footer.html" %}

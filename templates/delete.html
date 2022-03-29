@@ -1,5 +1,7 @@
 {% include "header.html" %}
 
+
+<!--Navbar for the delete page only shows link to Home route-->
 <nav class="fixed-top navbar navbar-expand-lg navbar-dark bg-dark px-4">
     <div class="container-fluid">
         <a class="navbar-brand fs-4" href="{{ url_for('home') }}">Sip Spots</a>
@@ -12,15 +14,13 @@
                 <li class="nav-item mx-2">
                     <a class="nav-link" aria-current="page" href="{{ url_for('home') }}">Home</a>
                 </li>
-                <li class="nav-item mx-2">
-                    <a class="nav-link active" href="{{ url_for('add_cafe') }}">Add a Cafe</a>
-                </li>
             </ul>
         </div>
     </div>
 </nav>
 
 
+<!--Simple form asks only for the API key-->
 <div class="delete-cafe-bg">
     <div class="container">
         <div class="row px-lg-5">

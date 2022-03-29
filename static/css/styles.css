@@ -1,7 +1,6 @@
 h4 {
   font-weight: 350;
   text-shadow: 0.05rem 0.05rem 0.2rem rgba(0, 0, 0, .5);
-
 }
 
 .cover-container {
@@ -44,6 +43,7 @@ h4 {
 .card-img-top:hover{
   opacity: 0.6;
 }
+
 .card-text {
   text-align: center;
   font-weight: 500;
@@ -55,6 +55,8 @@ h4 {
     width: 50%;
 }
 
+
+/* Card flip CSS functionality starts here (index.js provides the JS needed for this) */
 .card-container {
   perspective: 1000px;
   background-color: transparent;
@@ -91,6 +93,8 @@ h4 {
   transform: rotateY(180deg);
   background-color: #fff;
 }
+/* Card flip CSS functionality ends here */
+
 
 .add-cafe-bg,
 .delete-cafe-bg {
@@ -117,8 +121,4 @@ h4 {
   background-color: #f2f2f2;
   border: 1px solid #ccc;
   resize: vertical;
-}
-
-.alert {
-
 }
