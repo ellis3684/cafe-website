@@ -15,7 +15,7 @@ SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
 # Set API Key required to delete cafes
-API_KEY = os.environ['DELETE_CAFE_API_KEY']
+API_KEY = os.getenv('DELETE_CAFE_API_KEY')
 
 # Connect to SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
