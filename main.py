@@ -21,7 +21,7 @@ API_KEY = os.environ.get('DELETE_CAFE_API_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL_1', "sqlite:///cafes.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-
+db.create_all()
 
 # Cafe table config
 class Cafe(db.Model):
