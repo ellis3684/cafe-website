@@ -37,7 +37,7 @@ class Cafe(db.Model):
     coffee_price = db.Column(db.String(250), nullable=False)
 
 
-db.create_all()
+# db.create_all()
 
 
 # Config flask form to add cafes
