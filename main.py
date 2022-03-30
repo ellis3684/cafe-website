@@ -18,7 +18,10 @@ app.config['SECRET_KEY'] = SECRET_KEY
 API_KEY = os.environ.get('DELETE_CAFE_API_KEY')
 
 # Connect to SQLite database
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', "sqlite:///cafes.db").replace('postgres://', 'postgresql://')
+uri = os.environ.get('DATABASE_URL', "sqlite:///cafes.db")
+if uri.startswith('postgres://'):
+    uri = uri.replace('postgres://', 'postgresql://', 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
