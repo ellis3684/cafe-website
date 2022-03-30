@@ -58,12 +58,12 @@ h4 {
 
 /* Card flip CSS functionality starts here (index.js provides the JS needed for this) */
 .card-container {
-  perspective: 1000px;
+  -webkit-perspective: 1000px;
   background-color: transparent;
 }
 
 .card-container.hover .card-flipper {
-  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 
 .card-container, .card-front, .card-back {
@@ -72,25 +72,25 @@ h4 {
 }
 
 .card-flipper {
-  transition: 0.8s;
-  transform-style: preserve-3d;
+  -webkit-transition: 0.8s;
+  -webkit-transform-style: preserve-3d;
   position: relative;
 }
 
 .card-front, .card-back {
-  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   position: absolute;
   top: 0;
   left: 0;
 }
 
 .card-front {
-  z-index: 2;
-  transform: rotateY(0deg);
+  -webkit-z-index: 2;
+  -webkit-transform: rotateY(0deg);
 }
 
 .card-back {
-  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
   background-color: #fff;
 }
 /* Card flip CSS functionality ends here */

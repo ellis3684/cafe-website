@@ -18,9 +18,10 @@ app.config['SECRET_KEY'] = SECRET_KEY
 API_KEY = os.environ.get('DELETE_CAFE_API_KEY')
 
 # Connect to SQLite database
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL_1', "sqlite:///cafes.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', "sqlite:///cafes.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
 
 # Cafe table config
 class Cafe(db.Model):
@@ -138,4 +139,4 @@ def delete_cafe():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, host='0.0.0.0', port=5000)
